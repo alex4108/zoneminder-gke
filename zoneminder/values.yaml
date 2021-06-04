@@ -1,0 +1,38 @@
+# Default values for zoneminder.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: dlandon/zoneminder
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+
+
+service:
+  notificationPort: 9000
+  httpsPort: 8443
+
+storage:
+  configSize: 100Mi
+  dataSize: 10Gi
+  className: ssd
+
+timezone: America/Chicago
+initialDelaySeconds: 900
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 1000Mi
+  limits:
+    cpu: 250m
+    memory: 1000Mi
+  

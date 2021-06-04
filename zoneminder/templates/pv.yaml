@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "zoneminder.fullname" . }}-config-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeName: {{ include "zoneminder.fullname" . }}-config-pv
+  resources:
+    requests:
+      storage: {{ .Values.storage.configSize }}
+  storageClassName: {{ .Values.storage.className }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "zoneminder.fullname" . }}-data-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeName: {{ include "zoneminder.fullname" . }}-data-pv
+  resources:
+    requests:
+      storage: {{ .Values.storage.dataSize }}
+  storageClassName: {{ .Values.storage.className }}
+---

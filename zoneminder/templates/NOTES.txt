@@ -1,0 +1,5 @@
+It may take upto ten minutes for zoneminder to complete it's initialization.
+
+Long running tasks are:
+* Load Balancer provisioning
+* ZM Container init

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "zoneminder.fullname" . }}
+  labels:
+    {{- include "zoneminder.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "zoneminder.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "zoneminder.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: https
+              containerPort: 443
+              protocol: TCP
+            - name: notification
+              containerPort: 9000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 443
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            periodSeconds: 3
+          readinessProbe:
+            tcpSocket:
+              port: 443
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: INSTALL_HOOK
+            value: "0"
+          - name: INSTALL_FACE
+            value: "0"
+          - name: INSTALL_TINY_YOLOV3
+            value: "0"
+          - name: INSTALL_YOLOV3
+            value: "0"
+          - name: INSTALL_TINY_YOLOV4
+            value: "0"
+          - name: INSTALL_YOLOV4
+            value: "0"
+          - name: MULTI_PORT_START
+            value: "0"
+          - name: MULTI_PORT_END
+            value: "0"
+          - name: TZ
+            value: {{ .Values.timezone }}
