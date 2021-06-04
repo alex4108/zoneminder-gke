@@ -111,6 +111,8 @@ bash scripts/destroy-service-account.sh
 
 # Pricing (USD)
 
+You can use [ZoneMinder's FAQ](https://zoneminder.readthedocs.io/en/1.32.3/faq.html) to estimate your resource consumption.
+
 The stack should cost about $33 USD per month, excluding traffic charges, with the default configuration.
 
 ### GKE Compute Charges
