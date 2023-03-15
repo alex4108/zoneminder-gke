@@ -4,8 +4,7 @@ metadata:
   name: {{ include "zoneminder.fullname" . }}-config-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  volumeName: {{ include "zoneminder.fullname" . }}-config-pv
+    - ReadWriteOnce # not ReadWriteMany because image doesn't have mount.nfs
   resources:
     requests:
       storage: {{ .Values.storage.configSize }}
@@ -17,8 +16,7 @@ metadata:
   name: {{ include "zoneminder.fullname" . }}-data-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  volumeName: {{ include "zoneminder.fullname" . }}-data-pv
+    - ReadWriteOnce # not ReadWriteMany because image doesn't have mount.nfs
   resources:
     requests:
       storage: {{ .Values.storage.dataSize }}
