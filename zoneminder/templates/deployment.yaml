@@ -6,6 +6,8 @@ metadata:
     {{- include "zoneminder.labels" . | nindent 4 }}
 spec:
   replicas: 1
+  strategy:
+    type: Recreate # required for ReadWriteOnce pvc accessMode
   selector:
     matchLabels:
       {{- include "zoneminder.selectorLabels" . | nindent 6 }}
@@ -60,3 +62,26 @@ spec:
             value: "0"
           - name: TZ
             value: {{ .Values.timezone }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: data
+              mountPath: /var/cache/zoneminder
+            - name: dshm
+              mountPath: /dev/shm
+      imagePullSecrets: {{ .Values.imagePullSecrets | toYaml | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "zoneminder.fullname" . }}-config-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "zoneminder.fullname" . }}-data-pvc
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
