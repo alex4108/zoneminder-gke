@@ -69,7 +69,7 @@ spec:
               mountPath: /var/cache/zoneminder
             - name: dshm
               mountPath: /dev/shm
-    
+      imagePullSecrets: {{ .Values.imagePullSecrets | toYaml | nindent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
