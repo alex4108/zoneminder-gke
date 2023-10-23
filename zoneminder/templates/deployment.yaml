@@ -84,4 +84,4 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-            sizeLimit: 1Gi
+            sizeLimit: {{ .Values.shmSize | default "1Gi" }}
